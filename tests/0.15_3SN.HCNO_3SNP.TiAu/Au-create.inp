@@ -1,0 +1,25 @@
+Au                                     atomic symbol 
+79                                     atomic number 
+196.967                                atomic mass 
+11.00                                  number of valence electrons 
+basis/079.pp                           pseudopotential filename 
+basis/079_550.na0                      neutral atom filename 
+3                                      number of shells 
+0                                      l of the shell 
+ 1.00                                  occupation number of the shell
+5.10                                   cutoff 
+basis/079_510.wf1                      wavefunction filename 
+basis/079_510.na1                      orbital potential filename 
+1                                      l of the shell 
+ 0.00                                  occupation number of the shell
+5.50                                   cutoff 
+basis/079_550.wf2                      wavefunction filename 
+basis/079_550.na2                      orbital potential filename 
+2                                      l of the shell 
+10.00                                  occupation number of the shell
+4.65                                   cutoff 
+basis/079_465.wf3                      wavefunction filename 
+basis/079_465.na3                      orbital potential filename 
+2                                      for xc - shell of changed charge 
+0.5                                    dq of the changed shell for xc 
+0.125  0.125

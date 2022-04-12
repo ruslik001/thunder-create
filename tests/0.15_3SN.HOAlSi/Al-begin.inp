@@ -1,0 +1,15 @@
+Aluminium                atom name
+Al                       atom abbreviation
+13                       atomic number
+26.982                   atomic mass
+3.0                      number of valence electrons
+3                        exchange correlation
+3                        number of shells
+0                        angular momentum for s shell
+2.0                      number of electrons in s shell
+5.10                     cutoff radius for s shell
+1                        angular momentum for p shell
+1.0                      number of electrons in p shell
+5.80                     cutoff radius for p shell
+0                        use excited states
+0                        optimize basis set with x-confinement potential

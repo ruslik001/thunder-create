@@ -1,0 +1,23 @@
+Ti                                    atom name
+22                                    atomic number
+47.867                                atomic mass
+4.0                                   number of valence electrons 
+Ti/3t/022.pp                          pseudopotential filename
+Ti/3t/0.15/022_620.na0                na potential
+3                                     number shells
+0                                     L of the shell-1
+2.00                                  xn1 occupation number
+5.80                                  Rc
+Ti/3t/0.15/022_580.wf1                wavefunction
+Ti/3t/0.15/022_580.na1                state-1 potential
+1                                     L of the shell-2
+0.00                                  xn2 occupation number
+6.20                                  Rc
+Ti/3t/0.15/022_620.wf2                wavefunction
+Ti/3t/0.15/022_620.na2                state-3 potential
+2                                     L of the shell-3
+2.0                                   xn2 occupation number
+5.40                                  Rc
+Ti/3t/0.15/022_540.wf3                wavefunction
+Ti/3t/0.15/022_540.na3                state-3 potential
+3                                     for xc - shell of changed charge

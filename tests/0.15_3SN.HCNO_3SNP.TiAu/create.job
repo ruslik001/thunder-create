@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -q comm_mmem_week
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=168:00:00
+#PBS -l pvmem=4gb
+#PBS -m ae
+#PBS -M james.lewis@mail.wvu.edu
+#PBS -N create
+
+source ~/.bashrc
+cd /group/lewis/jplewis/thunder2014/fireball-create/0.15_3SN.HCNO_3SNP.TiAu
+./create.x > output.log 

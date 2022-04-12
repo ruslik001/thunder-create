@@ -1,0 +1,5 @@
+4                             nspec=Number of species
+O.create-inp
+Fe.create-inp
+Cu.create-inp
+Ga.create-inp

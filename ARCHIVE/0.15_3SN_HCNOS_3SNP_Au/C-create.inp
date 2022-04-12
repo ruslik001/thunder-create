@@ -1,0 +1,20 @@
+C                                     atom name
+6                                     atomic number
+12.011                                atomic mass
+4.0                                   number of valence electrons
+C/3/006.pp                            pseudopotential filename
+C/3/0.15/006_440.na0                  neutral atom filename
+2                                     number of shells
+0                                     l of the shell-1
+2.0                                   xn1 occupation number
+4.0                                   cutoff
+C/3/0.15/006_400.wf1                  wavefunction filename
+C/3/0.15/006_400.na1                  state-1 potential filename
+1                                     l of the shell-2
+2.0                                   xn2 occupation number
+4.4                                   cutoff
+C/3/0.15/006_440.wf2                  wavefunction filename
+C/3/0.15/006_440.na2                  state-2 potential filename
+2                                     for xc - shell of changed charge
+0.5                                   dq of the changed shell for xc
+0.25   0.125

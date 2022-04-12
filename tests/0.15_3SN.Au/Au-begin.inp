@@ -1,0 +1,34 @@
+Gold                     atom name
+Au                       atom abbreviation
+79                       atomic number
+196.967                  atomic mass
+11.0                     number of valence electrons
+3                        exchange correlation
+3                        number of shells
+0                        angular momentum for s shell
+1.0                      number of electrons in s shell
+5.10                     cutoff radius for s shell
+1                        angular momentum for p shell
+0.0                      number of electrons in p shell
+5.50                     cutoff radius for p shell
+2                        angular momentum for d shell
+10.0                     number of electrons in d shell
+4.65                     cutoff radius for d shell
+1                        use excited states
+10.0                     number of valence electrons (excited)
+1.0                      number of electrons in s shell (excited)
+0.0                      number of electrons in p shell (excited)
+9.0                      number of electrons in d shell (excited)
+1                        optimize basis set with x-confinement potential
+0.0                      Vo for s shell
+0.0                      r0 for s shell
+10.0                     Vo for p shell
+0.5                      r0 for p shell
+0.0                      Vo for d shell
+0.0                      r0 for d shell
+0.0                      Vo for s shell (excited)
+0.0                      r0 for s shell (excited)
+0.0                      Vo for p shell (excited)
+0.0                      r0 for p shell (excited)
+1000.0                   Vo for d shell (excited)
+0.5                      r0 for d shell (excited)
