@@ -295,7 +295,7 @@
 ! ----------------------------------------------------------------------------
 ! Loop over all bondcharge distances.
               do ibcba = 1, nbc_rho
-                dbcx = dfloat(ibcba - 1)*dbc/dfloat(nbc_bcna - 1)
+                dbcx = float(ibcba - 1)*dbc/float(nbc_bcna - 1)
 
 ! for all bondcharges-- we set b=dbcx/2.
                 distance_bc = dbcx/2.0d0
@@ -303,7 +303,7 @@
 ! Loop over all neutral atom distances.
 ! The distance is measured from the bondcharge center (b=dbcx/2)
                 do inaba = 1, nna_bcna
-                  dnax = dfloat(inaba - 1)*dna/dfloat(nna_bcna - 1)
+                  dnax = float(inaba - 1)*dna/float(nna_bcna - 1)
                   call evaluate_integral_3c (nFdata_cell_3c, ispecies,       &
      &                                       jspecies, kspecies, ispmin,     &
      &                                       ispmax, ctheta, ctheta_weights, &

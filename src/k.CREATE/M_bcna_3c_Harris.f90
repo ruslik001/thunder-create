@@ -311,7 +311,7 @@
 ! ----------------------------------------------------------------------------
 ! Loop over all bondcharge distances.
               do ibcba = 1, nbc_bcna
-                dbcx = dfloat(ibcba - 1)*dbc/dfloat(nbc_bcna - 1)
+                dbcx = float(ibcba - 1)*dbc/float(nbc_bcna - 1)
 
 ! for all bondcharges-- we set b=dbcx/2.
                 distance_bc = dbcx/2.0d0
@@ -319,7 +319,7 @@
 ! Loop over all neutral atom distances.
 ! The distance is measured from the bondcharge center (b=dbcx/2)
                 do inaba = 1, nna_bcna
-                  dnax = dfloat(inaba - 1)*dna/dfloat(nna_bcna - 1)
+                  dnax = float(inaba - 1)*dna/float(nna_bcna - 1)
                   call evaluate_integral_3c (nFdata_cell_3c, ispecies,       &
      &                                       jspecies, kspecies, ispmin,     &
      &                                       ispmax, ctheta, ctheta_weights, &
@@ -459,7 +459,7 @@
         avgVmat = 0.0d0
 
 ! Set up integration factors
-        dphi = pi/dfloat(nnphi_bcna - 1)
+        dphi = pi/float(nnphi_bcna - 1)
         phimult(1) = dphi*41.0d0/140.0d0
         do iphi = 2, nnphi_bcna - 1
           if (mod(iphi,6) .eq. 2) phimult(iphi) = dphi*216.0d0/140.0d0
@@ -479,7 +479,7 @@
 ! Note: We order the p-orbitals here x,y,z (or pi,pi',sig), NOT z,x,y.
 ! Note that px, and xz now are +1. And so on!
         do iphi = 1, nnphi_bcna
-          phi = dfloat(iphi - 1)*dphi
+          phi = float(iphi - 1)*dphi
 
 ! set up the phifactors
           phifactor(0) = 1.0d0
