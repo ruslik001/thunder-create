@@ -29,6 +29,11 @@
 ! Module Declaration
 ! ===========================================================================
         module M_rho_3c_Harris
+
+! /GLOBAL
+        use M_precision
+
+! /SYSTEM
         use M_species
         use M_atom_functions
         use M_integrals_3c
@@ -180,15 +185,12 @@
 
 ! Procedure
 ! ===========================================================================
-! Initialize logfile
-        logfile = 21
-
-        write (logfile,*)
-        write (logfile,*) ' ******************************************************* '
-        write (logfile,*) '               D E N S I T Y    M A T R I X              '
-        write (logfile,*) '                  I N T E R A C T I O N S                '
-        write (logfile,*) ' ******************************************************* '
-        write (logfile,*)
+        write (ilogfile,*)
+        write (ilogfile,*) ' ******************************************************* '
+        write (ilogfile,*) '               D E N S I T Y    M A T R I X              '
+        write (ilogfile,*) '                  I N T E R A C T I O N S                '
+        write (ilogfile,*) ' ******************************************************* '
+        write (ilogfile,*)
 
 ! Initialize the Legendre coefficients
         call gleg (ctheta, ctheta_weights, P_ntheta)
@@ -214,9 +216,9 @@
               ! Test ouput file for this species triplet
               itheta = 1
               isorp = 1
-              write (filename, '("/", "rho_3c_", i2.2, "_", i2.2, ".", i2.2, &
-     &                                       ".", i2.2, ".", i2.2, ".dat")') &
-     &          itheta, isorp, species(ispecies)%nZ,                         &
+              write (filename, '("/", "rho_3c_", i2.2, "_", i2.2, ".", i2.2,   &
+     &                                       ".", i2.2, ".", i2.2, ".dat")')   &
+     &          itheta, isorp, species(ispecies)%nZ,                           &
      &                         species(jspecies)%nZ, species(kspecies)%nZ
               inquire (file = trim(Fdata_location)//trim(filename), exist = skip)
               if (skip) cycle
@@ -233,43 +235,43 @@
                 do itheta = 1, P_ntheta
                   pFdata_bundle%nFdata_cell_3c = pFdata_bundle%nFdata_cell_3c + 1
 
-                  write (filename, '("/", "rho_3c_", i2.2, "_", i2.2, ".",   &
-     &                               i2.2, ".", i2.2, ".", i2.2, ".dat")')   &
-     &              itheta, isorp, species(ispecies)%nZ,                     &
+                  write (filename, '("/", "rho_3c_", i2.2, "_", i2.2, ".",     &
+     &                               i2.2, ".", i2.2, ".", i2.2, ".dat")')     &
+     &              itheta, isorp, species(ispecies)%nZ,                       &
      &                             species(jspecies)%nZ, species(kspecies)%nZ
 
                   ! open directory file
-                  write (interactions,                                       &
-     &                   '("/3c.",i2.2,".",i2.2,".",i2.2,".dir")')           &
-     &              species(ispecies)%nZ, species(jspecies)%nZ,              &
+                  write (interactions,                                         &
+     &                   '("/3c.",i2.2,".",i2.2,".",i2.2,".dir")')             &
+     &              species(ispecies)%nZ, species(jspecies)%nZ,                &
      &              species(kspecies)%nZ
-                  open (unit = 13,                                           &
-     &                  file = trim(Fdata_location)//trim(interactions),     &
+                  open (unit = 13,                                             &
+     &                  file = trim(Fdata_location)//trim(interactions),       &
      &                  status = 'unknown', position = 'append')
-                  write (13,100) pFdata_bundle%nFdata_cell_3c, P_rho_3c,     &
-     &                           isorp, itheta, filename(2:30),              &
+                  write (13,100) pFdata_bundle%nFdata_cell_3c, P_rho_3c,       &
+     &                           isorp, itheta, filename(2:30),                &
      &                           pFdata_cell%nME, nna_rho, dna, nbc_rho, dbc
                   close (unit = 13)
 
                   ! Open mu, nu, mvalue file and write out values.
-                  write (filename, '("/",i2.2, "_munu_3c.",                  &
-     &                                   i2.2,".",i2.2,".",i2.2,".dat")')    &
-     &              P_rho_3c, species(ispecies)%nZ, species(jspecies)%nZ,    &
+                  write (filename, '("/",i2.2, "_munu_3c.",                    &
+     &                                   i2.2,".",i2.2,".",i2.2,".dat")')      &
+     &              P_rho_3c, species(ispecies)%nZ, species(jspecies)%nZ,      &
      &                        species(kspecies)%nZ
                   open (unit = 12, file = trim(Fdata_location)//trim(filename),&
      &                  status = 'unknown', position = 'append')
 
                   ! Write out the mapping - stored in mu, nu, and mvalue
-                  write (12,*) (pFdata_cell%mu_3c(index_3c),                 &
+                  write (12,*) (pFdata_cell%mu_3c(index_3c),                   &
      &                                            index_3c = 1, nME3c_max)
-                  write (12,*) (pFdata_cell%nu_3c(index_3c),                 &
+                  write (12,*) (pFdata_cell%nu_3c(index_3c),                   &
      &                                            index_3c = 1, nME3c_max)
-                  write (12,*) (pFdata_cell%mvalue_3c(index_3c),             &
+                  write (12,*) (pFdata_cell%mvalue_3c(index_3c),               &
      &                                                index_3c = 1, nME3c_max)
                 end do
               end do
 
-              write (logfile,200) species(ispecies)%nZ, species(jspecies)%nZ,&
+              write (ilogfile,200) species(ispecies)%nZ, species(jspecies)%nZ, &
      &                            species(kspecies)%nZ
 
 ! Open all the output files.
@@ -277,12 +279,12 @@
               do isorp = ispmin, ispmax
                 do itheta = 1, P_ntheta
                   iounit = iounit + 1
-                  write (filename, '("/", "rho_3c_", i2.2, "_", i2.2, ".",   &
-     &                               i2.2, ".", i2.2, ".", i2.2, ".dat")')   &
-     &                  itheta, isorp, species(ispecies)%nZ,                 &
+                  write (filename, '("/", "rho_3c_", i2.2, "_", i2.2, ".",     &
+     &                               i2.2, ".", i2.2, ".", i2.2, ".dat")')     &
+     &                  itheta, isorp, species(ispecies)%nZ,                   &
      &                  species(jspecies)%nZ, species(kspecies)%nZ
-                  open (unit = (iounit),                                     &
-     &                  file = trim(Fdata_location)//trim(filename),         &
+                  open (unit = (iounit),                                       &
+     &                  file = trim(Fdata_location)//trim(filename),           &
      &                  status = 'unknown')
                 end do
               end do

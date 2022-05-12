@@ -45,6 +45,11 @@
 ! Module Declaration
 ! ============================================================================
         module M_rhoS_2c_Harris
+
+! /GLOBAL
+        use M_precision
+
+! /SYSTEM
         use M_atom_functions
         use M_species
         use M_integrals_2c
@@ -167,32 +172,29 @@
 
 ! Variable Declaration and Description
 ! ===========================================================================
-        integer logfile                     !< writing to which unit
+! None
 
 ! Procedure
 ! ===========================================================================
-! Initialize logfile
-        logfile = 21
-
-        write (logfile,*)
-        write (logfile,*) ' ******************************************************* '
-        write (logfile,*) ' S P H E R I C A L L Y   A V E R A G E D   D E N S I T Y '
-        write (logfile,*) '                  I N T E R A C T I O N S                '
-        write (logfile,*) ' ******************************************************* '
-        write (logfile,*)
-        write (logfile,*) ' Calling overlap case. '
+        write (ilogfile,*)
+        write (ilogfile,*) ' ******************************************************* '
+        write (ilogfile,*) ' S P H E R I C A L L Y   A V E R A G E D   D E N S I T Y '
+        write (ilogfile,*) '                  I N T E R A C T I O N S                '
+        write (ilogfile,*) ' ******************************************************* '
+        write (ilogfile,*)
+        write (ilogfile,*) ' Calling overlap case. '
         call overlapS
 
-        write (logfile,*)
-        write (logfile,*) ' Calling ontop left case. '
+        write (ilogfile,*)
+        write (ilogfile,*) ' Calling ontop left case. '
         call rhoS_ontopL_Harris
 
-        write (logfile,*)
-        write (logfile,*) ' Calling ontop right case. '
+        write (ilogfile,*)
+        write (ilogfile,*) ' Calling ontop right case. '
         call rhoS_ontopR_Harris
 
-        write (logfile,*)
-        write (logfile,*) ' Calling atom case. '
+        write (ilogfile,*)
+        write (ilogfile,*) ' Calling atom case. '
         call rhoS_atom_Harris
 
 ! Format Statements

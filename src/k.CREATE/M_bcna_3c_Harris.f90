@@ -29,6 +29,11 @@
 ! Module Declaration
 ! ===========================================================================
         module M_bcna_3c_Harris
+
+! /GLOBAL
+        use M_precision
+
+! /SYSTEM
         use M_species
         use M_atom_functions
         use M_integrals_3c
@@ -92,7 +97,6 @@
 ! Variable Declaration and Description
 ! ===========================================================================
         integer ispecies, jspecies, kspecies !< counters for number of species
-!       integer isorp                        !< counter for shells
         integer itheta                       !< counter for theta
 
         type (T_Fdata_bundle_3c), pointer :: pFdata_bundle
@@ -140,6 +144,7 @@
 
         include '../include/gridsizes.h'
 
+
 ! Argument Declaration and Description
 ! ===========================================================================
 ! Input
@@ -158,7 +163,6 @@
 !       integer isuperloop              ! counter over species**3 - parallel
         integer ispecies, jspecies, kspecies  ! species numbers
 !       integer itemp                   ! used to find species values
-        integer logfile                 !< writing to which unit
         integer nFdata_cell_3c          !< indexing of interactions
 
 ! MPI
@@ -184,16 +188,13 @@
 
 ! Procedure
 ! ===========================================================================
-! Initialize logfile
-        logfile = 21
-
-        write (logfile,*)
-        write (logfile,*) ' ******************************************************* '
-        write (logfile,*) '     B O N D   C H A R G E   N E U T R A L   A T O M     '
-        write (logfile,*) '                  (B C N A) M A T R I X                  '
-        write (logfile,*) '                  I N T E R A C T I O N S                '
-        write (logfile,*) ' ******************************************************* '
-        write (logfile,*)
+        write (ilogfile,*)
+        write (ilogfile,*) ' ******************************************************* '
+        write (ilogfile,*) '     B O N D   C H A R G E   N E U T R A L   A T O M     '
+        write (ilogfile,*) '                  (B C N A) M A T R I X                  '
+        write (ilogfile,*) '                  I N T E R A C T I O N S                '
+        write (ilogfile,*) ' ******************************************************* '
+        write (ilogfile,*)
 
 ! Initialize the Legendre coefficients
         call gleg (ctheta, ctheta_weights, P_ntheta)
@@ -253,56 +254,56 @@
               do itheta = 1, P_ntheta
                 pFdata_bundle%nFdata_cell_3c = pFdata_bundle%nFdata_cell_3c + 1
 
-                write (filename, '("/", "bcna_", i2.2, "_", i2.2, ".", i2.2, &
-     &                                      ".", i2.2, ".", i2.2, ".dat")')  &
-     &            itheta, isorp, species(ispecies)%nZ, species(jspecies)%nZ, &
+                write (filename, '("/", "bcna_", i2.2, "_", i2.2, ".", i2.2,   &
+     &                                      ".", i2.2, ".", i2.2, ".dat")')    &
+     &            itheta, isorp, species(ispecies)%nZ, species(jspecies)%nZ,   &
      &                           species(kspecies)%nZ
 
                 ! open directory file
-                write (interactions,                                         &
-     &                 '("/3c.",i2.2,".",i2.2,".",i2.2,".dir")')             &
-     &            species(ispecies)%nZ, species(jspecies)%nZ,                &
+                write (interactions,                                           &
+     &                 '("/3c.",i2.2,".",i2.2,".",i2.2,".dir")')               &
+     &            species(ispecies)%nZ, species(jspecies)%nZ,                  &
      &            species(kspecies)%nZ
-                open (unit = 13,                                             &
-     &                file = trim(Fdata_location)//trim(interactions),       &
+                open (unit = 13,                                               &
+     &                file = trim(Fdata_location)//trim(interactions),         &
      &                status = 'unknown', position = 'append')
-                write (13,100) pFdata_bundle%nFdata_cell_3c, P_bcna, isorp,  &
-     &                         itheta, filename(2:30), pFdata_cell%nME,      &
+                write (13,100) pFdata_bundle%nFdata_cell_3c, P_bcna, isorp,    &
+     &                         itheta, filename(2:30), pFdata_cell%nME,        &
      &                         nna_bcna, dna, nbc_bcna, dbc
                 close (unit = 13)
 
                 ! Open mu, nu, mvalue file and write out values.
-                write (filename, '("/",i2.2, "_munu_3c.",                    &
-     &                                 i2.2,".",i2.2,".",i2.2,".dat")')      &
-     &             P_bcna, species(ispecies)%nZ, species(jspecies)%nZ,       &
+                write (filename, '("/",i2.2, "_munu_3c.",                      &
+     &                                 i2.2,".",i2.2,".",i2.2,".dat")')        &
+     &             P_bcna, species(ispecies)%nZ, species(jspecies)%nZ,         &
      &                     species(kspecies)%nZ
-                open (unit = 12, file = trim(Fdata_location)//trim(filename),&
+                open (unit = 12, file = trim(Fdata_location)//trim(filename),  &
      &                status = 'unknown', position = 'append')
 
                 ! Write out the mapping - stored in mu, nu, and mvalue
-                write (12,*) (pFdata_cell%mu_3c(index_3c),                   &
+                write (12,*) (pFdata_cell%mu_3c(index_3c),                     &
      &                                          index_3c = 1, nME3c_max)
-                write (12,*) (pFdata_cell%nu_3c(index_3c),                   &
+                write (12,*) (pFdata_cell%nu_3c(index_3c),                     &
      &                                              index_3c = 1, nME3c_max)
-                write (12,*) (pFdata_cell%mvalue_3c(index_3c),               &
+                write (12,*) (pFdata_cell%mvalue_3c(index_3c),                 &
      &                                                  index_3c = 1, nME3c_max)
               end do
 
-              write (logfile,200) species(ispecies)%nZ, species(jspecies)%nZ,&
-     &                            species(kspecies)%nZ
+              write (ilogfile,200) species(ispecies)%nZ, species(jspecies)%nZ, &
+     &                             species(kspecies)%nZ
 
 ! Open all the output files.
               iounit = 12
               do itheta = 1, P_ntheta
                 iounit = iounit + 1
-                write (filename, '("/", "bcna_", i2.2, "_", i2.2, ".", i2.2, &
-     &                             ".", i2.2, ".", i2.2, ".dat")')           &
-     &                 itheta, isorp, species(ispecies)%nZ,                  &
+                write (filename, '("/", "bcna_", i2.2, "_", i2.2, ".", i2.2,   &
+     &                             ".", i2.2, ".", i2.2, ".dat")')             &
+     &                 itheta, isorp, species(ispecies)%nZ,                    &
      &                 species(jspecies)%nZ, species(kspecies)%nZ
 
 ! Write out the data...
-                open (unit = (iounit),                                       &
-     &                file = trim(Fdata_location)//trim(filename),           &
+                open (unit = (iounit),                                         &
+     &                file = trim(Fdata_location)//trim(filename),             &
      &                status = 'unknown')
               end do
 

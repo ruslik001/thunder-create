@@ -29,6 +29,8 @@
 ! Module Declaration
 ! ===========================================================================
         module M_rhoS_3c_Harris
+
+! /SYSTEM
         use M_species
         use M_atom_functions
         use M_integrals_3c
@@ -142,6 +144,10 @@
 ! matrix elements of the form <psi1|V(1)|psi2> for the spherical density.
 ! ===========================================================================
         subroutine rhoS_3c_Harris
+
+! a.GLOBAL
+        use M_precision
+
         implicit none
 
         include '../include/gridsizes.h'
@@ -163,7 +169,6 @@
         integer isorp, ideriv           ! loop over shells
         integer ispmin, ispmax
         integer ispecies, jspecies, kspecies  ! species numbers
-        integer logfile                 !< writing to which unit
         integer nFdata_cell_3c          !< indexing of interactions
 
         real dbc, dna                  ! distances between centers
@@ -193,15 +198,12 @@
 
 ! Procedure
 ! ===========================================================================
-! Initialize logfile
-        logfile = 21
-
-        write (logfile,*)
-        write (logfile,*) ' ******************************************************* '
-        write (logfile,*) '      S P H E R I C A L   D E N S I T Y    M A T R I X   '
-        write (logfile,*) '                 I N T E R A C T I O N S                 '
-        write (logfile,*) ' ******************************************************* '
-        write (logfile,*)
+        write (ilogfile,*)
+        write (ilogfile,*) ' ******************************************************* '
+        write (ilogfile,*) '      S P H E R I C A L   D E N S I T Y    M A T R I X   '
+        write (ilogfile,*) '                 I N T E R A C T I O N S                 '
+        write (ilogfile,*) ' ******************************************************* '
+        write (ilogfile,*)
 
 ! Initialize the Legendre coefficients
         call gleg (ctheta, ctheta_weights, P_ntheta)
@@ -234,9 +236,9 @@
               ! Test ouput file for this species triplet
               itheta = 1
               isorp = 1
-              write (filename, '("/", "rhoS_3c_", i2.2, "_", i2.2, ".", i2.2,&
-     &                                       ".", i2.2, ".", i2.2, ".dat")') &
-     &          itheta, isorp, species(ispecies)%nZ,                         &
+              write (filename, '("/", "rhoS_3c_", i2.2, "_", i2.2, ".", i2.2,  &
+     &                                       ".", i2.2, ".", i2.2, ".dat")')   &
+     &          itheta, isorp, species(ispecies)%nZ,                           &
      &                         species(jspecies)%nZ, species(kspecies)%nZ
               inquire (file = trim(Fdata_location)//trim(filename), exist = skip)
               if (skip) cycle
@@ -253,56 +255,56 @@
                 do itheta = 1, P_ntheta
                   pFdata_bundle%nFdata_cell_3c = pFdata_bundle%nFdata_cell_3c + 1
 
-                  write (filename, '("/", "rhoS_3c_", i2.2, "_", i2.2, ".",  &
-     &                               i2.2, ".", i2.2, ".", i2.2, ".dat")')   &
-     &              itheta, isorp, species(ispecies)%nZ,                     &
+                  write (filename, '("/", "rhoS_3c_", i2.2, "_", i2.2, ".",    &
+     &                               i2.2, ".", i2.2, ".", i2.2, ".dat")')     &
+     &              itheta, isorp, species(ispecies)%nZ,                       &
      &                             species(jspecies)%nZ, species(kspecies)%nZ
 
                   ! open directory file
-                  write (interactions,                                       &
-     &                   '("/3c.",i2.2,".",i2.2,".",i2.2,".dir")')           &
-     &              species(ispecies)%nZ, species(jspecies)%nZ,              &
+                  write (interactions,                                         &
+     &                   '("/3c.",i2.2,".",i2.2,".",i2.2,".dir")')             &
+     &              species(ispecies)%nZ, species(jspecies)%nZ,                &
      &              species(kspecies)%nZ
-                  open (unit = 13,                                           &
-     &                  file = trim(Fdata_location)//trim(interactions),     &
+                  open (unit = 13,                                             &
+     &                  file = trim(Fdata_location)//trim(interactions),       &
      &                  status = 'unknown', position = 'append')
-                  write (13,100) pFdata_bundle%nFdata_cell_3c, P_rhoS_3c,    &
-     &                           isorp, itheta, filename(2:30),              &
+                  write (13,100) pFdata_bundle%nFdata_cell_3c, P_rhoS_3c,      &
+     &                           isorp, itheta, filename(2:30),                &
      &                           pFdata_cell%nME, nna_rho, dna, nbc_rho, dbc
                   close (unit = 13)
 
                   ! Open mu, nu, mvalue file and write out values.
-                  write (filename, '("/",i2.2, "_munu_3c.",                  &
-     &                                   i2.2,".",i2.2,".",i2.2,".dat")')    &
-     &               P_rhoS_3c, species(ispecies)%nZ, species(jspecies)%nZ,  &
+                  write (filename, '("/",i2.2, "_munu_3c.",                    &
+     &                                   i2.2,".",i2.2,".",i2.2,".dat")')      &
+     &               P_rhoS_3c, species(ispecies)%nZ, species(jspecies)%nZ,    &
      &                          species(kspecies)%nZ
                    open (unit = 12, file = trim(Fdata_location)//trim(filename),&
      &                   status = 'unknown', position = 'append')
 
                    ! Write out the mapping - stored in mu, nu, and mvalue
-                   write (12,*) (pFdata_cell%mu_3c(index_3c),                &
+                   write (12,*) (pFdata_cell%mu_3c(index_3c),                  &
      &                                             index_3c = 1, nME3c_max)
-                   write (12,*) (pFdata_cell%nu_3c(index_3c),                &
+                   write (12,*) (pFdata_cell%nu_3c(index_3c),                  &
      &                                             index_3c = 1, nME3c_max)
-                   write (12,*) (pFdata_cell%mvalue_3c(index_3c),            &
+                   write (12,*) (pFdata_cell%mvalue_3c(index_3c),              &
      &                                                 index_3c = 1, nME3c_max)
                 end do
               end do
 
-              write (logfile,200) species(ispecies)%nZ, species(jspecies)%nZ,&
-     &                            species(kspecies)%nZ
+              write (ilogfile,200) species(ispecies)%nZ, species(jspecies)%nZ, &
+     &                             species(kspecies)%nZ
 
 ! Open all the output files.
               iounit = 12
               do isorp = ispmin, ispmax
                 do itheta = 1, P_ntheta
                   iounit = iounit + 1
-                  write (filename, '("/", "rhoS_3c_", i2.2, "_", i2.2, ".",  &
-     &                               i2.2, ".", i2.2, ".", i2.2, ".dat")')   &
-     &                  itheta, isorp, species(ispecies)%nZ,                 &
+                  write (filename, '("/", "rhoS_3c_", i2.2, "_", i2.2, ".",    &
+     &                               i2.2, ".", i2.2, ".", i2.2, ".dat")')     &
+     &                  itheta, isorp, species(ispecies)%nZ,                   &
      &                  species(jspecies)%nZ, species(kspecies)%nZ
-                  open (unit = (iounit),                                     &
-     &                  file = trim(Fdata_location)//trim(filename),         &
+                  open (unit = (iounit),                                       &
+     &                  file = trim(Fdata_location)//trim(filename),           &
      &                  status = 'unknown')
                 end do
               end do
@@ -326,11 +328,11 @@
 
 ! Set ideriv to zero here
                 ideriv = 0
-                call evaluate_integral_2c (index_2c_overlapS, ispecies,      &
-     &                                     jspecies, isorp, ideriv, rcutoff1,&
-     &                                     rcutoff2, dbcx, nz_rho, nrho_rho, &
-     &                                     rint_overlapS, nopi, zmin, zmax,  &
-     &                                     rhomin, rhomax,                   &
+                call evaluate_integral_2c (index_2c_overlapS, ispecies,        &
+     &                                     jspecies, isorp, ideriv, rcutoff1,  &
+     &                                     rcutoff2, dbcx, nz_rho, nrho_rho,   &
+     &                                     rint_overlapS, nopi, zmin, zmax,    &
+     &                                     rhomin, rhomax,                     &
      &                                     pFdata_overlapS_cell%fofx)
 
 ! Loop over all neutral atom distances.
@@ -339,11 +341,11 @@
                   dnax = float(inaba - 1)*dna/float(nna_rho - 1)
 
 ! Loop over the shells
-                  call evaluate_integral_3c (nFdata_cell_3c, ispecies,       &
-     &                                       jspecies, kspecies, ispmin,     &
-     &                                       ispmax, ctheta, ctheta_weights, &
-     &                                       dbcx, dnax, nnr_rho,            &
-     &                                       nntheta_rho, psiSofr,           &
+                  call evaluate_integral_3c (nFdata_cell_3c, ispecies,         &
+     &                                       jspecies, kspecies, ispmin,       &
+     &                                       ispmax, ctheta, ctheta_weights,   &
+     &                                       dbcx, dnax, nnr_rho,              &
+     &                                       nntheta_rho, psiSofr,             &
      &                                       phiint_rhoS, qpl)
 
 ! ----------------------------------------------------------------------------
@@ -359,11 +361,11 @@
                     do itheta = 1, P_ntheta
 
 ! Now, divide by the spherical overlap so to get the weighted spherical density.
-                      qpl(itheta,:,isorp) = qpl(itheta,:,isorp)               &
+                      qpl(itheta,:,isorp) = qpl(itheta,:,isorp)                &
      &                                      /(pFdata_overlapS_cell%fofx + 1.0d-6)
                       iounit = iounit + 1
 
-                      write (iounit,*)                                        &
+                      write (iounit,*)                                         &
      &                  (qpl(itheta,index_3c,isorp), index_3c = 1, nME3c_max)
                     end do
                   end do
