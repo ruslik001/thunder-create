@@ -65,26 +65,22 @@
         use M_rhoS_2c_Harris
         use M_vxc_Harris
         use M_Coulomb
-!       use M_Hubbard_Harris
 
 ! /DOGS
        use M_dipole_z
        use M_vna_DOGS
        use M_vxc_DOGS
-!      use M_Hubbard_DOGS
 
 ! /NAC
         use M_Goverlap
 
 ! /HARRIS 3C
-        use M_bcna_3c_Harris
+        use M_bcna_Harris
         use M_rho_3c_Harris
         use M_rhoS_3c_Harris
-!       use M_snxc
-!       use M_xc3c
 
 ! /DOGS 3C
-        use M_bcna_3c_DOGS
+        use M_bcna_DOGS
 
         implicit none
 
@@ -231,10 +227,10 @@
 ! Initialize three-center Harris routines
         call initialize_rho_3c_Harris
         call initialize_rhoS_3c_Harris
-        call initialize_bcna_3c_Harris
+        call initialize_bcna_Harris
 
 ! Initialize three-center DOGS routines
-        call initialize_bcna_3c_DOGS
+        call initialize_bcna_DOGS
 
 ! Allocate two-center array sizes
         call size_Fdata_3c
@@ -242,10 +238,10 @@
 ! Now calculate the three-center Harris interactions:
         call rho_3c_Harris
         call rhoS_3c_Harris
-        call bcna_3c_Harris
+        call bcna_Harris
 
 ! Now calculate the three-center DOGS interactions:
-        call bcna_3c_DOGS
+        call bcna_DOGS
 
 ! Write out the number of interactions
         do ispecies = 1, nspecies
