@@ -6,7 +6,7 @@ basis/079.pp                           pseudopotential filename
 basis/079_585.na0                      neutral atom filename 
 3                                      number of shells 
 0                                      l of the shell 
- 1.00                                  occupation number of the shell
+ 2.00                                  occupation number of the shell
 5.45                                   cutoff 
 basis/079_545.wf1                      wavefunction filename 
 basis/079_545.na1                      orbital potential filename 
@@ -16,7 +16,7 @@ basis/079_545.na1                      orbital potential filename
 basis/079_585.wf2                      wavefunction filename 
 basis/079_585.na2                      orbital potential filename 
 2                                      l of the shell 
-10.00                                  occupation number of the shell
+ 9.00                                  occupation number of the shell
 5.05                                   cutoff 
 basis/079_505.wf3                      wavefunction filename 
 basis/079_505.na3                      orbital potential filename 

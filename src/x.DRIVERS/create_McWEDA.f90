@@ -1,22 +1,24 @@
 ! copyright info:
 !
-!                             @Copyright 2008
+!                             @Copyright 2022
 !                           Fireball Committee
-! West Virginia University - James P. Lewis, Chair
-! Arizona State University - Otto F. Sankey
-! Universidad Autonoma de Madrid - Jose Ortega
+! Hong Kong Quantum AI Laboratory, Ltd. - James P. Lewis, Chair
+! Universidad de Madrid - Jose Ortega
 ! Academy of Sciences of the Czech Republic - Pavel Jelinek
+! Arizona State University - Otto F. Sankey
 
 ! Previous and/or current contributors:
 ! Auburn University - Jian Jun Dong
-! Caltech - Brandon Keith
+! California Institute of Technology - Brandon Keith
+! Czech Institute of Physics - Prokop Hapala
+! Czech Institute of Physics - Vladimír Zobač
 ! Dublin Institute of Technology - Barry Haycock
 ! Pacific Northwest National Laboratory - Kurt Glaesemann
 ! University of Texas at Austin - Alex Demkov
 ! Ohio University - Dave Drabold
+! Synfuels China Technology Co., Ltd. - Pengju Ren
 ! Washington University - Pete Fedders
 ! West Virginia University - Ning Ma and Hao Wang
-
 ! also Gary Adams, Juergen Frisch, John Tomfohr, Kevin Schmidt,
 !      and Spencer Shellman
 !
@@ -63,26 +65,22 @@
         use M_rhoS_2c_Harris
         use M_vxc_Harris
         use M_Coulomb
-!       use M_Hubbard_Harris
 
 ! /DOGS
        use M_dipole_z
        use M_vna_DOGS
        use M_vxc_DOGS
-!      use M_Hubbard_DOGS
 
 ! /NAC
         use M_Goverlap
 
 ! /HARRIS 3C
-        use M_bcna_3c_Harris
+        use M_bcna_Harris
         use M_rho_3c_Harris
         use M_rhoS_3c_Harris
-!       use M_snxc
-!       use M_xc3c
 
 ! /DOGS 3C
-        use M_bcna_3c_DOGS
+        use M_bcna_DOGS
 
         implicit none
 
@@ -229,10 +227,10 @@
 ! Initialize three-center Harris routines
         call initialize_rho_3c_Harris
         call initialize_rhoS_3c_Harris
-        call initialize_bcna_3c_Harris
+        call initialize_bcna_Harris
 
 ! Initialize three-center DOGS routines
-        call initialize_bcna_3c_DOGS
+        call initialize_bcna_DOGS
 
 ! Allocate two-center array sizes
         call size_Fdata_3c
@@ -240,10 +238,10 @@
 ! Now calculate the three-center Harris interactions:
         call rho_3c_Harris
         call rhoS_3c_Harris
-        call bcna_3c_Harris
+        call bcna_Harris
 
 ! Now calculate the three-center DOGS interactions:
-        call bcna_3c_DOGS
+        call bcna_DOGS
 
 ! Write out the number of interactions
         do ispecies = 1, nspecies
